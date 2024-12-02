@@ -163,6 +163,9 @@ export default function TodoForm() {
                 <SelectItem value="django">Django</SelectItem>
                 <SelectItem value="numpy">Numpy</SelectItem>
                 <SelectItem value="pandas">Pandas</SelectItem>
+                <SelectItem value="matplot_or_Seaborn">
+                  matplotlib & Seaborn
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
