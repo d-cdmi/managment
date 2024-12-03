@@ -204,43 +204,4 @@ class RowItemController extends Controller
         // Return the ZIP file for download
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
-    public function downloadZip($id)
-    {
-        // Find the RowItem entry by ID
-        $rowItem = RowItem::find($id);
-
-        if (!$rowItem) {
-            return response()->json(['message' => 'CdmiData not found'], 404);
-        }
-
-        // Decode the file paths from the database
-        $files = json_decode($rowItem->files, true);
-
-        if (empty($files)) {
-            return response()->json(['message' => 'No files to download'], 404);
-        }
-
-        // Create a ZIP file
-        $zip = new \ZipArchive();
-        $zipFileName = "row_item_{$id}_files.zip";
-        $zipFilePath = storage_path("app/public/{$zipFileName}");
-
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
-            return response()->json(['message' => 'Failed to create ZIP file'], 500);
-        }
-
-        // Add files to the ZIP archive
-        foreach ($files as $file) {
-            $filePath = storage_path("app/public/{$file}");
-            if (file_exists($filePath)) {
-                $zip->addFile($filePath, basename($file)); // Add the file to the ZIP archive
-            }
-        }
-
-        // Close the ZIP archive
-        $zip->close();
-
-        // Return the ZIP file for download
-        return response()->download($zipFilePath)->deleteFileAfterSend(true);
-    }
 }
