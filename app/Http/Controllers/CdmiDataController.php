@@ -217,35 +217,25 @@ class CdmiDataController extends Controller
         if (!$rowItem) {
             return response()->json(['message' => 'CdmiData not found'], 404);
         }
-
-        // Decode the file paths from the database
-        $files = json_decode($rowItem->files, true);
-
-        if (empty($files)) {
-            return response()->json(['message' => 'No files to download'], 404);
+    
+        // Decode the 'files' column (which contains the relative file path)
+        $filePaths = json_decode($rowItem->files);
+    
+        if (empty($filePaths)) {
+            return response()->json(['message' => 'No file path found'], 404);
         }
-
-        // Create a ZIP file
-        $zip = new \ZipArchive();
-        $zipFileName = "row_item_{$id}_files.zip";
-        $zipFilePath = storage_path("app/public/{$zipFileName}");
-
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
-            return response()->json(['message' => 'Failed to create ZIP file'], 500);
+    
+        // The file path should be relative to the 'public' disk (e.g., uploads/cdmi/filename.zip)
+        $filePath = $filePaths[0]; // Assuming you're dealing with a single file, adjust for multiple files if necessary
+    
+        // Check if the file exists in the 'public' storage
+        $fullPath = storage_path("app/public/{$filePath}");
+    
+        if (!file_exists($fullPath)) {
+            return response()->json(['message' => 'File does not exist'], 404);
         }
-
-        // Add files to the ZIP archive
-        foreach ($files as $file) {
-            $filePath = storage_path("app/public/{$file}");
-            if (file_exists($filePath)) {
-                $zip->addFile($filePath, basename($file)); // Add the file to the ZIP archive
-            }
-        }
-
-        // Close the ZIP archive
-        $zip->close();
-
-        // Return the ZIP file for download
-        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    
+        // Return the file as a downloadable response
+        return response()->download($fullPath);
     }
 }
