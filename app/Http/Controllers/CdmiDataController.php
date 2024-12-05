@@ -130,54 +130,6 @@ class CdmiDataController extends Controller
     }
 
     // Delete a specific CdmiData by ID
-    public function destroyodd(Request $request, $id)
-    {
-        $rowItem = CdmiData::find($id);
-
-        if (!$rowItem) {
-            return response()->json(['message' => 'CdmiData not found'], 404);
-        }
-
-        // Delete associated files
-        // $files = json_decode($rowItem->files, true);
-        // if ($files) {
-        //     foreach ($files as $file) {
-        //         // Add cdmi folder path to each file
-        //         Storage::disk('public')->delete($file);
-        //     }
-        // }
-
-        // // Delete the RowItem
-        // $rowItem->delete();
-
-        // return response()->json(['message' => 'CdmiData deletedssssssssss successfully','data'=>$rowItem], 200);
-        
-        //  Move the file for the delete foldert
-        $files = json_decode($rowItem->files, true);
-        if ($files) {
-            foreach ($files as $file) {
-                // Get the original file path
-                $originalPath = "public/{$file}";
-
-                // Construct the new path in the "delete" folder
-                $fileName = basename($file);
-                $newPath = "uploads/cdmi/delete/{$fileName}";
-
-                // Move the file
-                if (Storage::exists($originalPath)) {
-                    Storage::move($originalPath, "public/{$newPath}");
-                }
-            }
-        }
-        
-        // Update for the deletion in delete than True
-        $rowItem->update([
-            'isDelete' => $request->input("isDelete","True"),
-        ]);
-
-        return response()->json($rowItem, 200);
-    }
-
     public function destroy(Request $request, $id, $password)
     {
         $rowItem = CdmiData::find($id);
