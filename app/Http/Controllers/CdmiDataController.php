@@ -23,7 +23,8 @@ class CdmiDataController extends Controller
         $filePaths = [];
         if ($request->hasFile('files')) {
             \Log::info('Files received:', ['files' => $request->file('files')]);
-
+            
+            $dateTime = now()->format('Y-m-d_His');
             // Process each file
             $index = 1; // Initialize the index for naming files
             foreach ($request->file('files') as $file) {
@@ -32,18 +33,55 @@ class CdmiDataController extends Controller
 
                     // Generate file name
                     $extension = $file->getClientOriginalExtension();
-                    $dateTime = now()->format('Y-m-d_His');
                     $fileName = "{$index}_{$validatedData['title']}_{$dateTime}.{$extension}";
 
                     // Store the file with the new name in the 'uploads/cdmi' folder
                     $path = $file->storeAs('uploads/cdmi', $fileName, 'public');
-                    $filePaths[] = $path;
-
+                    $filePaths[] = $path; // Store relative path here
+    
                     // Increment the index for the next file
                     $index++;
                 } 
             }
-        } 
+        
+            $files = $filePaths;
+            if (empty($filePaths)) {
+                return response()->json(['message' => 'No files to download'], 404);
+            }
+        
+            // Create a ZIP file
+            $zip = new \ZipArchive();
+            $zipFileName = "{$validatedData['pwd']}_{$validatedData['title']}_{$dateTime}.zip";
+            $zipFilePath = storage_path("app/public/uploads/cdmi/{$zipFileName}");
+        
+            if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+                return response()->json(['message' => 'Failed to create ZIP file'], 500);
+            }
+        
+            // Add files to the ZIP archive
+            foreach ($filePaths as $file) {
+                $filePath = storage_path("app/public/{$file}");
+                if (file_exists($filePath)) {
+                    $zip->addFile($filePath, basename($file)); // Add the file to the ZIP archive
+                }
+            }
+        
+            // Close the ZIP archive
+            $zip->close();
+        
+            // Delete uploaded files after zipping
+            if ($filePaths) {
+                foreach ($filePaths as $file) {
+                    // Remove each file from the 'public' disk after adding to the zip
+                    Storage::disk('public')->delete($file);
+                }
+            }
+            $filePaths  = [];
+            // Save the ZIP file path (relative to 'public' disk)
+            $filePaths = ["uploads/cdmi/{$zipFileName}"];
+        }
+
+        // Store the data in the database
         $rowItem = CdmiData::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
