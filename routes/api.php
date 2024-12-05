@@ -88,7 +88,7 @@ Route::put('/cdmi-data/{id}', [CdmiDataController::class, 'update']);
 Route::patch('/cdmi-data/{id}', [CdmiDataController::class, 'update']); // Optional: If you want to use PATCH too
 
 // Route to delete a specific CdmiData entry by ID (DELETE)
-Route::delete('/cdmi-data/{id}', [CdmiDataController::class, 'destroy']);
+Route::delete('/cdmi-data/{id}/{password}', [CdmiDataController::class, 'destroy']);
 
 // Route to download a file from a specific CdmiData entry (GET)
 Route::get('/cdmi-data/{id}/download', [CdmiDataController::class, 'download']);

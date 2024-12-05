@@ -9,8 +9,10 @@ class CdmiData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'isDelete', 'files'];
+    protected $fillable = ['title', 'description', 'isDelete', 'files','pwd'];
 
+    protected $hidden = ['pwd','isDelete','updated_at'];
+    
     protected $casts = [
         'files' => 'array', // Cast the 'files' field as an array
     ];
