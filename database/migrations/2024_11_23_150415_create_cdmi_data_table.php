@@ -12,8 +12,9 @@ class CreateCdmiDataTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->text('isDelete')->default('False');;
+            $table->integer('isDelete')->default(0);;
             $table->json('files')->nullable(); // Store file paths as a JSON array
+            $table->text('pwd')->nullable();
             $table->timestamps();
         });
     }

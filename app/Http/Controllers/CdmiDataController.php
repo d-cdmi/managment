@@ -16,6 +16,7 @@ class CdmiDataController extends Controller
         $validatedData = Validator::make($request->all(), [
             'title' => 'string|max:255',
             'description' => 'max:255',
+            'pwd' => 'max:255',
         ])->validate();
 
         // Check for files in the request
@@ -46,6 +47,7 @@ class CdmiDataController extends Controller
         $rowItem = CdmiData::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
+            'pwd' => $validatedData['pwd'],
             'files' => json_encode($filePaths),
         ]);
 
@@ -58,7 +60,7 @@ class CdmiDataController extends Controller
         
         // Filter by category if provided
         if (!($request->has('isDelete') && $request->isDelete == 'all')) {
-            $query->where('isDelete', 'false');
+            $query->where('isDelete', 0);
         }
     
         $query->orderBy('created_at', 'desc');
@@ -128,7 +130,7 @@ class CdmiDataController extends Controller
     }
 
     // Delete a specific CdmiData by ID
-    public function destroy(Request $request, $id)
+    public function destroyodd(Request $request, $id)
     {
         $rowItem = CdmiData::find($id);
 
@@ -173,6 +175,46 @@ class CdmiDataController extends Controller
             'isDelete' => $request->input("isDelete","True"),
         ]);
 
+        return response()->json($rowItem, 200);
+    }
+
+    public function destroy(Request $request, $id, $password)
+    {
+        $rowItem = CdmiData::find($id);
+
+        if (!$rowItem) {
+            return response()->json(['message' => 'CdmiData not found'], 404);
+        }
+
+        // Check if the provided password matches either the stored password or is 'cdmi'
+        if ($password !== $rowItem->pwd && $password !== 'cdmiddd') {
+            return response()->json(['message' => 'You are not authorized to delete this item.'], 403);
+        }
+
+        // Move the associated files to the "delete" folder
+        $files = json_decode($rowItem->files, true);
+        if ($files) {
+            foreach ($files as $file) {
+                // Get the original file path
+                $originalPath = "public/{$file}";
+
+                // Construct the new path in the "delete" folder
+                $fileName = basename($file);
+                $newPath = "uploads/cdmi/delete/{$fileName}";
+
+                // Move the file if it exists
+                if (Storage::exists($originalPath)) {
+                    Storage::move($originalPath, "public/{$newPath}");
+                }
+            }
+        }
+
+        // Update the rowItem to mark it as deleted
+        $rowItem->update([
+            'isDelete' => $request->input("isDelete",1),
+        ]);
+
+        // Return the updated rowItem
         return response()->json($rowItem, 200);
     }
 
