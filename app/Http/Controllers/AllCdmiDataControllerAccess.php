@@ -99,7 +99,7 @@ class AllCdmiDataControllerAccess extends Controller
 
     public function index()
     {
-        $rowItems = RowItem::orderBy('created_at', 'desc')->get();
+        $rowItems = CdmiData::orderBy('created_at', 'desc')->get();
         return response()->json($rowItems, 200);
     }
 
