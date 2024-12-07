@@ -21,7 +21,7 @@ class FingerprintData extends Model
 
     // Optionally, if you want to hide certain attributes from being returned, e.g., 'isBlocked' or others
     protected $hidden = [
-        'isBlocked', // Example of hiding an attribute
+         // Example of hiding an attribute
         'name', // Example of hiding an attribute
     ];
 

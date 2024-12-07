@@ -22,7 +22,7 @@ class CdmiDataController extends Controller
         ])->validate();
 
         $ipAddress = $request->ip();
-        $existingFingerprint = FingerprintData::where('fingerprint', $$validatedData['fingerprint'])->first();
+        $existingFingerprint = FingerprintData::where('fingerprint', $validatedData['fingerprint'])->first();
 
         if ($existingFingerprint) {
             // If the fingerprint exists, check the 'isBlocked' status

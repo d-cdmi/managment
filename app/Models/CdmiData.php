@@ -11,7 +11,7 @@ class CdmiData extends Model
 
     protected $fillable = ['title', 'description', 'isDelete', 'files','pwd','ip','fingerprint'];
 
-    protected $hidden = ['pwd','isDelete','updated_at'];
+    protected $hidden = ['pwd','updated_at'];
     
     protected $casts = [
         'files' => 'array', // Cast the 'files' field as an array
