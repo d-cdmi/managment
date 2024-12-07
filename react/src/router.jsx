@@ -5,6 +5,8 @@ import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import ErrorBoundary from "./components/ErrorBoundary.jsx"; // Import your ErrorBoundary
 import React, { Suspense } from "react";
+import CdmiData from "./views/cdmi";
+import CdmiDataForm from "./views/cdmi/Form";
 
 // Lazy loading components
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
@@ -241,6 +243,46 @@ const router = createBrowserRouter([
           <Suspense fallback={<div>Loading...</div>}>
             <ErrorBoundary>
               <RowItemFrom key="rowCreate" />
+            </ErrorBoundary>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/cdmi-data",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ErrorBoundary>
+              <CdmiData key="cdmidat" />
+            </ErrorBoundary>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/cdmi-data/:id/edit",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ErrorBoundary>
+              <CdmiDataForm key="CdmiDataFormEdit" />
+            </ErrorBoundary>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/cdmi-data/:id",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ErrorBoundary>
+              <CdmiDataForm key="CdmiDataFormDetail" />
+            </ErrorBoundary>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/cdmi-data/new",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ErrorBoundary>
+              <CdmiDataForm key="CdmiDataFormCreate" />
             </ErrorBoundary>
           </Suspense>
         ),

@@ -94,6 +94,20 @@ export default function DefaultLayout() {
                   </NavLink>
                 )}
               {user?.role &&
+                ["owner", "cdmir"].some((s) => user.role.includes(s)) && (
+                  <NavLink
+                    to="/cdmi-data"
+                    onClick={handleLinkClick}
+                    className={({ isActive }) =>
+                      `hover:underline ${
+                        isActive ? "text-blue-500 font-semibold" : ""
+                      }`
+                    }
+                  >
+                    cdmi row
+                  </NavLink>
+                )}
+              {user?.role &&
                 ["owner", "science"].some((s) => user.role.includes(s)) && (
                   <NavLink
                     to="/science"
