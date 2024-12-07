@@ -117,28 +117,14 @@ class CdmiDataController extends Controller
 
     public function index(Request $request)
     {
-        $query = CdmiData::query();
-        
-        // Filter by category if provided
-        if (!($request->has('isDelete') && $request->isDelete == 'all')) {
-            $query->where('isDelete', 0);
-        }
+        // Retrieve all non-deleted records
+        $data = CdmiData::where('isDelete', 0)
+                         ->orderBy('created_at', 'desc')
+                         ->get();
     
-        $query->orderBy('created_at', 'desc');
-
-        $todos = $query->paginate(10);   
-    
-        $response = [
-            'data' => $todos->items(),          // Get the current page items
-            'total' => $todos->total(),         // Get the total number of todos
-            'current_page' => $todos->currentPage(), // Current page number
-            'last_page' => $todos->lastPage(),  // Total number of pages
-            'per_page' => $todos->perPage(),    // Items per page
-            'total_pages' => $todos->lastPage(), // Total pages available
-        ];
-         
-        return response()->json($todos->items(),200);
+        return response()->json($data);
     }
+    
 
     // Retrieve a specific CdmiData by ID
     public function show($id)
