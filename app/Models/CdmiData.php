@@ -9,7 +9,7 @@ class CdmiData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'isDelete', 'files','pwd','ip'];
+    protected $fillable = ['title', 'description', 'isDelete', 'files','pwd','ip','fingerprint'];
 
     protected $hidden = ['pwd','isDelete','updated_at'];
     

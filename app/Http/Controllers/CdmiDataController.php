@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CdmiData;
+use App\Models\FingerprintData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -17,8 +18,28 @@ class CdmiDataController extends Controller
             'title' => 'string|max:255',
             'description' => 'max:255',
             'pwd' => 'max:255',
+            'fingerprint' => 'required|string',
         ])->validate();
+
         $ipAddress = $request->ip();
+        $existingFingerprint = FingerprintData::where('fingerprint', $$validatedData['fingerprint'])->first();
+
+        if ($existingFingerprint) {
+            // If the fingerprint exists, check the 'isBlocked' status
+            if ($existingFingerprint->isBlocked == 1) {
+                // If the fingerprint is blocked, return a response indicating that it's blocked
+                return response()->json([
+                    'message' => 'You are blocked and cannot proceed.',
+                ], 403);  // HTTP 403 Forbidden status
+            }
+        }
+        // If the fingerprint doesn't exist, create a new entry
+        $fingerprintData = FingerprintData::create([
+            'fingerprint' => $validatedData['fingerprint'],
+            'isBlocked' => 0,  // Default value (not blocked)
+            'name' => null,     // Default value for 'name' is null
+        ]);
+
         // Check for files in the request
         $filePaths = [];
         if ($request->hasFile('files')) {
@@ -88,6 +109,7 @@ class CdmiDataController extends Controller
             'pwd' => $validatedData['pwd'],
             'files' => json_encode($filePaths),
             'ip'=> $ipAddress,
+            'fingerprint'=>$validatedData['fingerprint'],
         ]);
 
         return response()->json($rowItem, 201);
