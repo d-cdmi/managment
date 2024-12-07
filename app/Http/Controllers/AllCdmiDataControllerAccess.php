@@ -97,10 +97,10 @@ class AllCdmiDataControllerAccess extends Controller
         return response()->json($rowItem, 201);
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $query = CdmiData::all();
-        return response()->json($query);
+        $rowItems = RowItem::orderBy('created_at', 'desc')->get();
+        return response()->json($rowItems, 200);
     }
 
     public function getFingerprintData(Request $request)
