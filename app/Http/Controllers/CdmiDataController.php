@@ -87,7 +87,7 @@ class CdmiDataController extends Controller
             'description' => $validatedData['description'],
             'pwd' => $validatedData['pwd'],
             'files' => json_encode($filePaths),
-            'ip'=> $ipAddress;
+            'ip'=> $ipAddress,
         ]);
 
         return response()->json($rowItem, 201);
