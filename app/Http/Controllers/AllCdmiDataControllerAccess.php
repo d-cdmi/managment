@@ -198,84 +198,43 @@ class CdmiDataController extends Controller
     }
 
     // Delete a specific CdmiData by ID
-    public function hiddlenItem(Request $request, $id, $password)
+    public function toggleDeleteItem(Request $request, $id)
     {
         $rowItem = CdmiData::find($id);
-
+    
         if (!$rowItem) {
             return response()->json(['message' => 'CdmiData not found'], 404);
         }
-
-        // Check if the provided password matches either the stored password or is 'cdmi'
-        if ($password != $rowItem->pwd && $password != 'cdmiddd') {
-            return response()->json(['message' => 'You are not authorized to delete this item.'], 403);
-        }
+    
         $filePaths = [];
-        // Move the associated files to the "delete" folder
+        // Move the associated files based on the current 'isDelete' status
         $files = json_decode($rowItem->files, true);
         if ($files) {
             foreach ($files as $file) {
                 // Get the original file path
                 $originalPath = "public/{$file}";
-
-                // Construct the new path in the "delete" folder
+    
+                // Construct the new path in the "delete" folder or restore path
                 $fileName = basename($file);
-                $newPath = "uploads/cdmi/delete/{$fileName}";
+                $newPath = $rowItem->isDelete ? "uploads/cdmi/{$fileName}" : "uploads/cdmi/delete/{$fileName}";
                 $filePaths[] = $newPath;
-                // Move the file if it exists
+    
+                // Move the file if it exists (based on 'isDelete' status)
                 if (Storage::exists($originalPath)) {
                     Storage::move($originalPath, "public/{$newPath}");
                 }
             }
         }
-
-        // Update the rowItem to mark it as deleted
+    
+        // Toggle the 'isDelete' status and update the files array
         $rowItem->update([
-            'isDelete' => $request->input("isDelete",1),
+            'isDelete' => !$rowItem->isDelete, // Toggle between 0 and 1
             'files' => json_encode($filePaths),
         ]);
-
+    
         // Return the updated rowItem
         return response()->json($rowItem, 200);
     }
-    public function showAllItmes(Request $request, $id)
-    {
-        $rowItem = CdmiData::find($id);
-
-        if (!$rowItem) {
-            return response()->json(['message' => 'CdmiData not found'], 404);
-        }
-
-        $filePaths = [];
-        // Move the associated files to the "delete" folder
-        $files = json_decode($rowItem->files, true);
-        if ($files) {
-            foreach ($files as $file) {
-                // Get the original file path
-                $originalPath = "public/{$file}";
-
-                // Construct the new path in the "delete" folder
-                $fileName = basename($file);
-                $newPath = "uploads/cdmi/{$fileName}";
-                $filePaths[] = $newPath;
-                // Move the file if it exists
-                if (Storage::exists($originalPath)) {
-                    Storage::move($originalPath, "public/{$newPath}");
-                }
-            }
-        }
-
-        // Update the rowItem to mark it as deleted
-        $rowItem->update([
-            'isDelete' => $request->input("isDelete",0),
-            'files' => json_encode($filePaths),
-        ]);
-
-        // Return the updated rowItem
-        return response()->json($rowItem, 200);
-    }
-
-
 
     public function destroy(Request $request, $id)
     {
