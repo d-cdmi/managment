@@ -18,7 +18,7 @@ class CdmiDataController extends Controller
             'description' => 'max:255',
             'pwd' => 'max:255',
         ])->validate();
-
+        $ipAddress = $request->ip();
         // Check for files in the request
         $filePaths = [];
         if ($request->hasFile('files')) {
@@ -87,6 +87,7 @@ class CdmiDataController extends Controller
             'description' => $validatedData['description'],
             'pwd' => $validatedData['pwd'],
             'files' => json_encode($filePaths),
+            'ip'=> $ipAddress;
         ]);
 
         return response()->json($rowItem, 201);
