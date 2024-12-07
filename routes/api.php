@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CdmiDataController;
+use App\Http\Controllers\AllCdmiDataControllerAccess;
 use App\Http\Controllers\RowItemController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\WorkController;
@@ -62,6 +63,32 @@ Route::middleware(['auth:sanctum', 'auto.logout'])->group(function () {
     Route::put('/google-photos/{id}', [GooglePhotoController::class, 'update']);
     
     
+    // cdmi-all-controller
+    Route::post('/cdmi-data', [AllCdmiDataControllerAccess::class, 'store']);
+
+    // Route to get all CdmiData entries (GET)
+    Route::get('/cdmi-data', [AllCdmiDataControllerAccess::class, 'index']);
+
+    // Route to get a specific CdmiData entry by ID (GET)
+    Route::get('/cdmi-data/{id}', [AllCdmiDataControllerAccess::class, 'show']);
+
+    // Route to update a specific CdmiData entry by ID (PUT/PATCH)
+    Route::put('/cdmi-data/{id}', [AllCdmiDataControllerAccess::class, 'update']);
+    Route::patch('/cdmi-data/{id}', [AllCdmiDataControllerAccess::class, 'update']); // Optional: If you want to use PATCH too
+
+    // Route to delete a specific CdmiData entry by ID  toggle the items
+    Route::get('/cdmi-data/{id}/toggle', [AllCdmiDataControllerAccess::class, 'toggleDeleteItem']);
+
+    // Route to delete a specific CdmiData entry by ID (DELETE)
+    Route::delete('/cdmi-data/{id}', [AllCdmiDataControllerAccess::class, 'destroy']);
+    // Route to download a file from a specific CdmiData entry (GET)
+    Route::get('/cdmi-data/{id}/download', [AllCdmiDataControllerAccess::class, 'download']);
+
+    // Route to get all FingerprintData entries (GET)
+    Route::get('/cdmi-data-fingerprint', [AllCdmiDataControllerAccess::class, 'getFingerprintData']);
+    // Route to get all FingerprintData entries (GET) to block or unblocked
+    Route::get('/cdmi-data-fingerprint/{fingerprint}', [AllCdmiDataControllerAccess::class, 'blockFingerprintData']);
+    
 });
 Route::get('/get-ipinfo', [IpInfoController::class, 'getIpInfo']);
 
@@ -75,23 +102,23 @@ Route::post('/google-photos', [GooglePhotoController::class, 'store']);
 
 
 // Route to create a new CdmiData entry (POST)
-Route::post('/cdmi-data', [CdmiDataController::class, 'store']);
+Route::post('/cdmi', [CdmiDataController::class, 'store']);
 
 // Route to get all CdmiData entries (GET)
-Route::get('/cdmi-data', [CdmiDataController::class, 'index']);
+Route::get('/cdmi', [CdmiDataController::class, 'index']);
 
 // Route to get a specific CdmiData entry by ID (GET)
-Route::get('/cdmi-data/{id}', [CdmiDataController::class, 'show']);
+Route::get('/cdmi/{id}', [CdmiDataController::class, 'show']);
 
 // Route to update a specific CdmiData entry by ID (PUT/PATCH)
-Route::put('/cdmi-data/{id}', [CdmiDataController::class, 'update']);
-Route::patch('/cdmi-data/{id}', [CdmiDataController::class, 'update']); // Optional: If you want to use PATCH too
+Route::put('/cdmi/{id}', [CdmiDataController::class, 'update']);
+Route::patch('/cdmi/{id}', [CdmiDataController::class, 'update']); // Optional: If you want to use PATCH too
 
 // Route to delete a specific CdmiData entry by ID (DELETE)
-Route::delete('/cdmi-data/{id}/{password}', [CdmiDataController::class, 'destroy']);
+Route::delete('/cdmi/{id}/{password}', [CdmiDataController::class, 'destroy']);
 
 // Route to download a file from a specific CdmiData entry (GET)
-Route::get('/cdmi-data/{id}/download', [CdmiDataController::class, 'download']);
+Route::get('/cdmi/{id}/download', [CdmiDataController::class, 'download']);
 
 // add Health Route
 Route::get('/health', function () {
