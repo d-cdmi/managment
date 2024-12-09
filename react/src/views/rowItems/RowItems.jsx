@@ -128,7 +128,7 @@ export default function RowItemShow() {
           return files.length > 0
             ? files.map((file, index) => (
                 <>
-                  <div className="flex flex-wrap gap-2 items-center justify-around">
+                  <div className="flex flex-wrap items-center justify-around gap-2">
                     <Link
                       key={index}
                       to={`${
@@ -220,24 +220,24 @@ export default function RowItemShow() {
   });
 
   return (
-    <div className="p-4 mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+    <div className="mx-auto p-4">
+      <div className="mb-4 flex flex-col items-center justify-between sm:flex-row">
         <h1
-          className="text-2xl font-semibold cursor-pointer"
+          className="cursor-pointer text-2xl font-semibold"
           onClick={() => setSearchQuery("")}
         >
           Row Items
         </h1>
-        <div className="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto sm:space-x-4">
+        <div className="flex w-full flex-col sm:w-auto sm:flex-row sm:items-center sm:space-x-4">
           <Input
             type="text"
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="py-2 px-4 rounded-md focus:outline-none focus:ring-2 sm:order-2 xl:w-[200px]"
+            className="rounded-md px-4 py-2 focus:outline-none focus:ring-2 sm:order-2 xl:w-[200px]"
           />
           <Button
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:order-2 xl:w-[100px]"
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:order-2 xl:w-[100px]"
             onClick={() => navigate("/row/new")}
           >
             Create

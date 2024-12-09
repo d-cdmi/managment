@@ -54,26 +54,24 @@ export default function DefaultLayout() {
       ) : (
         <div
           id="defaultLayout"
-          className="flex min-h-screen flex-col sm:flex-row "
+          className="flex min-h-screen flex-col sm:flex-row"
         >
           <aside
-            className={` dark:sm:bg-slate-950 sm:bg-opacity-100 transform transition-transform duration-300 z-20 
-              ${menuOpen ? "translate-x-0" : "-translate-x-full"} 
-              sm:translate-x-0 sm:relative sm:w-64 w-full sm:flex flex-col py-6 px-4 fixed h-full`}
+            className={`z-20 transform transition-transform duration-300 sm:bg-opacity-100 dark:sm:bg-slate-950 ${menuOpen ? "translate-x-0" : "-translate-x-full"} fixed h-full w-full flex-col px-4 py-6 sm:relative sm:flex sm:w-64 sm:translate-x-0`}
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="mb-6 flex items-center justify-between">
               <h1 className="text-2xl font-bold">MY SITE</h1>
               <button className="sm:hidden" onClick={toggleMenu}>
                 <X className="h-6 w-6" />
               </button>
             </div>
-            <nav className="flex flex-col space-y-4 flex-grow items-center">
+            <nav className="flex flex-grow flex-col items-center space-y-4">
               <NavLink
                 to="/dashboard"
                 onClick={handleLinkClick}
                 className={({ isActive }) =>
-                  `hover:underline  ${
-                    isActive ? "text-blue-500 font-semibold" : ""
+                  `hover:underline ${
+                    isActive ? "font-semibold text-blue-500" : ""
                   }`
                 }
               >
@@ -86,7 +84,7 @@ export default function DefaultLayout() {
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
                       `hover:underline ${
-                        isActive ? "text-blue-500 font-semibold" : ""
+                        isActive ? "font-semibold text-blue-500" : ""
                       }`
                     }
                   >
@@ -100,7 +98,7 @@ export default function DefaultLayout() {
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
                       `hover:underline ${
-                        isActive ? "text-blue-500 font-semibold" : ""
+                        isActive ? "font-semibold text-blue-500" : ""
                       }`
                     }
                   >
@@ -113,8 +111,8 @@ export default function DefaultLayout() {
                     to="/science"
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
-                      `hover:underline hover:text-lg ${
-                        isActive ? "text-blue-500 font-semibold " : ""
+                      `hover:text-lg hover:underline ${
+                        isActive ? "font-semibold text-blue-500" : ""
                       }`
                     }
                   >
@@ -127,8 +125,8 @@ export default function DefaultLayout() {
                     to="/log"
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
-                      `hover:underline hover:text-lg ${
-                        isActive ? "text-blue-500 font-semibold " : ""
+                      `hover:text-lg hover:underline ${
+                        isActive ? "font-semibold text-blue-500" : ""
                       }`
                     }
                   >
@@ -141,8 +139,8 @@ export default function DefaultLayout() {
                     to="/money"
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
-                      `hover:underline hover:text-lg ${
-                        isActive ? "text-blue-500 font-semibold" : ""
+                      `hover:text-lg hover:underline ${
+                        isActive ? "font-semibold text-blue-500" : ""
                       }`
                     }
                   >
@@ -155,8 +153,8 @@ export default function DefaultLayout() {
                     to="/work"
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
-                      `hover:underline hover:text-lg ${
-                        isActive ? "text-blue-500 font-semibold" : ""
+                      `hover:text-lg hover:underline ${
+                        isActive ? "font-semibold text-blue-500" : ""
                       }`
                     }
                   >
@@ -166,7 +164,7 @@ export default function DefaultLayout() {
               <div className="mt-auto space-y-4">
                 <div className="flex items-center space-x-2">
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center p-2 rounded-md">
+                    <DropdownMenuTrigger className="flex items-center rounded-md p-2">
                       Theme
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
@@ -192,22 +190,22 @@ export default function DefaultLayout() {
           {/* Backdrop for mobile menu */}
           {menuOpen && (
             <div
-              className="fixed inset-0 dark:bg-black opacity-50 sm:hidden h-full"
+              className="fixed inset-0 h-full opacity-50 dark:bg-black sm:hidden"
               onClick={toggleMenu}
             />
           )}
 
           {/* Main Content */}
-          <div className="flex-1 p-4 bg-gray-100 dark:bg-gray-900">
-            <header className="flex justify-between items-center mb-4">
-              <button className="sm:hidden p-2" onClick={toggleMenu}>
+          <div className="flex-1 bg-gray-100 p-4 dark:bg-gray-900">
+            <header className="mb-4 flex items-center justify-between">
+              <button className="p-2 sm:hidden" onClick={toggleMenu}>
                 {menuOpen ? (
                   <X className="h-6 w-6" />
                 ) : (
                   <Menu className="h-6 w-6" />
                 )}
               </button>
-              <div className="flex-grow flex justify-end mr-6">
+              <div className="mr-6 flex flex-grow justify-end">
                 <LogOut
                   size={33}
                   color="#df2626"
@@ -223,7 +221,7 @@ export default function DefaultLayout() {
             </main>
 
             {notification && (
-              <div className="fixed bottom-4 right-4 p-4 dark:bg-gray-800 text-white rounded-lg shadow-lg">
+              <div className="fixed bottom-4 right-4 rounded-lg p-4 text-white shadow-lg dark:bg-gray-800">
                 {notification}
               </div>
             )}

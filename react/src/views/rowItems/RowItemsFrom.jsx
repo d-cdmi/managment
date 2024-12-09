@@ -129,7 +129,7 @@ export default function RowItemForm() {
   }
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
+    <div className="mx-auto max-w-6xl p-4">
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -180,7 +180,7 @@ export default function RowItemForm() {
             type="file"
             multiple
             onChange={handleFileChange}
-            className="mt-1 text-white-400"
+            className="text-white-400 mt-1"
             disabled={mode === "show" || mode === "update"}
           />
           {mode === "show" && fileUrls.length > 0 && (
@@ -197,7 +197,7 @@ export default function RowItemForm() {
                         <img
                           src={url}
                           alt={`File ${index + 1}`}
-                          className="max-w-xs max-h-40 object-cover"
+                          className="max-h-40 max-w-xs object-cover"
                         />
                         <Link
                           to={url}
@@ -220,7 +220,7 @@ export default function RowItemForm() {
                         <Link
                           to={url}
                           download
-                          className="text-blue-600 hover:underline ml-2"
+                          className="ml-2 text-blue-600 hover:underline"
                         >
                           Download PDF {index + 1}
                         </Link>
@@ -238,7 +238,7 @@ export default function RowItemForm() {
                         <Link
                           to={url}
                           download
-                          className="text-blue-600 hover:underline ml-2"
+                          className="ml-2 text-blue-600 hover:underline"
                         >
                           Download File {index + 1}
                         </Link>
@@ -254,7 +254,7 @@ export default function RowItemForm() {
         <div className="flex space-x-4">
           <Button
             type={mode === "show" ? "button" : "submit"}
-            className={`bg-blue-500 text-white hover:bg-blue-600 w-[100px] ${
+            className={`w-[100px] bg-blue-500 text-white hover:bg-blue-600 ${
               !["owner", "row"].some((s) => user.role.includes(s)) &&
               mode !== "create"
                 ? "hidden"
@@ -267,16 +267,16 @@ export default function RowItemForm() {
               ? mode === "update"
                 ? "Update"
                 : mode === "show"
-                ? "Edit"
-                : "Create"
+                  ? "Edit"
+                  : "Create"
               : mode === "create"
-              ? "Create"
-              : null}
+                ? "Create"
+                : null}
           </Button>
 
           <Button
             type="button"
-            className="bg-gray-500 text-white hover:bg-gray-600 w-[100px]"
+            className="w-[100px] bg-gray-500 text-white hover:bg-gray-600"
             onClick={() => navigate("/row")}
           >
             Go To Home

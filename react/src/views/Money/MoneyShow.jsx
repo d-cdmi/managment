@@ -45,9 +45,9 @@ export default function MoneyShow() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-md mb-4 flex flex-col items-start">
-        <div className="flex space-x-4 mb-4">
+    <div className="flex min-h-screen flex-col items-center bg-gray-100 p-4 dark:bg-gray-900">
+      <div className="mb-4 flex w-full max-w-md flex-col items-start">
+        <div className="mb-4 flex space-x-4">
           <Link to="deposite">
             <Button className="bg-blue-500 text-white hover:bg-blue-600">
               Deposit
@@ -69,16 +69,16 @@ export default function MoneyShow() {
           placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full p-2 border  rounded "
+          className="w-full rounded border p-2"
         />
       </div>
-      <Card className="w-full max-w-md p-8 ">
-        <h1 className="text-2xl font-semibold mb-6 text-center">
+      <Card className="w-full max-w-md p-8">
+        <h1 className="mb-6 text-center text-2xl font-semibold">
           Money Management Details
         </h1>
         {loading && <Loader />}
         {error && (
-          <div className="mb-4 p-4 bg-red-100 text-red-800 rounded">
+          <div className="mb-4 rounded bg-red-100 p-4 text-red-800">
             {error}
           </div>
         )}
@@ -98,10 +98,10 @@ export default function MoneyShow() {
               <Textarea
                 value={entry.description}
                 readOnly
-                className="w-full p-2 border mt-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="mt-2 w-full border p-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               />
             </div>
-            <div className="flex justify-end mt-4">
+            <div className="mt-4 flex justify-end">
               <Button
                 className="bg-blue-500 text-white hover:bg-blue-600"
                 onClick={() => navigate(`/money-management/${entry.id}/edit`)}

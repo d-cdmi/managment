@@ -159,7 +159,7 @@ export default function TodosPage() {
         header: "Actions",
         cell: ({ row }) => (
           <>
-            <div className="flex flex-wrap gap-2 items-center justify-around">
+            <div className="flex flex-wrap items-center justify-around gap-2">
               <Link
                 to={`/science/${row.original.id}`}
                 className="text-blue-500 hover:underline"
@@ -173,7 +173,7 @@ export default function TodosPage() {
               </Link>
               {["owner", "science-d"].some((s) => user.role.includes(s)) && (
                 <Button
-                  className="ml-4  hover:bg-red-600"
+                  className="ml-4 hover:bg-red-600"
                   onClick={() => onDeleteClick(row.original)}
                 >
                   <Trash2 />
@@ -206,18 +206,18 @@ export default function TodosPage() {
   });
 
   return (
-    <div className="p-4 mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+    <div className="mx-auto p-4">
+      <div className="mb-4 flex flex-col items-center justify-between sm:flex-row">
         <h1
-          className="text-2xl font-semibold cursor-pointer"
+          className="cursor-pointer text-2xl font-semibold"
           onClick={() => setSearchQuery("")}
         >
           Data Science Lecturers
         </h1>
         <h3>Total : {total}</h3>
 
-        <div className="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto sm:space-x-4">
-          <div className="w-full sm:w-1/2 mb-4 sm:mb-0 sm:order-1 mr-6">
+        <div className="flex w-full flex-col sm:w-auto sm:flex-row sm:items-center sm:space-x-4">
+          <div className="mb-4 mr-6 w-full sm:order-1 sm:mb-0 sm:w-1/2">
             <Select
               value={category}
               onValueChange={(value) => {
@@ -246,11 +246,11 @@ export default function TodosPage() {
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="py-2 px-4 rounded-md focus:outline-none focus:ring-2 sm:order-2 xl:w-[200px]"
+            className="rounded-md px-4 py-2 focus:outline-none focus:ring-2 sm:order-2 xl:w-[200px]"
           />
           {["owner", "science-c"].some((s) => user.role.includes(s)) && (
             <Button
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:order-2 xl:w-[100px]"
+              className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:order-2 xl:w-[100px]"
               onClick={() => navigate("/science/new")}
             >
               Create

@@ -123,7 +123,7 @@ export default function CdmiDataForm() {
   if (isLoadingRow || isCreating || isLoadingRow || isUpdating) {
     return (
       <div className="mt-8">
-        <div className="flex items-center justify-center p-4 ">
+        <div className="flex items-center justify-center p-4">
           <Loader />
         </div>
       </div>
@@ -131,9 +131,9 @@ export default function CdmiDataForm() {
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto  mt-20">
+    <div className="mx-auto mt-20 max-w-6xl p-6">
       <form onSubmit={handleSubmit} className="mt-4">
-        <div className="mb-6 mx-auto">
+        <div className="mx-auto mb-6">
           <h4 className="block text-lg font-medium">
             Delete Pin : <span className="text-lm font-extrabold">{pin}</span>
           </h4>
@@ -185,7 +185,7 @@ export default function CdmiDataForm() {
             type="file"
             multiple
             onChange={handleFileChange}
-            className="mt-1 text-white-400"
+            className="text-white-400 mt-1"
             disabled={mode === "show" || mode === "update"}
           />
           {mode === "show" && fileUrls.length > 0 && (
@@ -202,7 +202,7 @@ export default function CdmiDataForm() {
                         <img
                           src={url}
                           alt={`File ${index + 1}`}
-                          className="max-w-xs max-h-40 object-cover"
+                          className="max-h-40 max-w-xs object-cover"
                         />
                         <Link
                           to={url}
@@ -225,7 +225,7 @@ export default function CdmiDataForm() {
                         <Link
                           to={url}
                           download
-                          className="text-blue-600 hover:underline ml-2"
+                          className="ml-2 text-blue-600 hover:underline"
                         >
                           Download PDF {index + 1}
                         </Link>
@@ -243,7 +243,7 @@ export default function CdmiDataForm() {
                         <Link
                           to={url}
                           download
-                          className="text-blue-600 hover:underline ml-2"
+                          className="ml-2 text-blue-600 hover:underline"
                         >
                           Download File {index + 1}
                         </Link>
@@ -258,22 +258,22 @@ export default function CdmiDataForm() {
         <div className="flex space-x-4">
           <Button
             type={mode === "show" ? "button" : "submit"}
-            className="bg-blue-500 text-white hover:bg-blue-600 w-[100px]"
+            className="w-[100px] bg-blue-500 text-white hover:bg-blue-600"
             onClick={() => mode === "show" && navigate(`/cdmi-data/${id}/edit`)}
             disabled={isCreating || isUpdating}
           >
             {isCreating || isUpdating
               ? "Loading..."
               : mode === "update"
-              ? "Update"
-              : mode === "show"
-              ? "Edit"
-              : "Create"}
+                ? "Update"
+                : mode === "show"
+                  ? "Edit"
+                  : "Create"}
           </Button>
 
           <Button
             type="button"
-            className="bg-gray-500 text-white hover:bg-gray-600 w-[100px]"
+            className="w-[100px] bg-gray-500 text-white hover:bg-gray-600"
             onClick={() => navigate("/cdmi-data")}
           >
             Go To Home

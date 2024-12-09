@@ -19,7 +19,7 @@ const NotFoundPage = () => {
     });
   }, [setNotification, setToken, setUser, token]);
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex h-screen flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="text-center">
         <h1 className="text-6xl font-bold text-red-500 dark:text-red-400">
           404
@@ -35,7 +35,7 @@ const NotFoundPage = () => {
         </Button>
       </div>
       {notification && (
-        <div className="fixed bottom-4 right-4 p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+        <div className="fixed bottom-4 right-4 rounded-lg bg-gray-800 p-4 text-white shadow-lg">
           {notification}
         </div>
       )}

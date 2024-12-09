@@ -1,25 +1,25 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
-baseQuery: fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_API_BASE_URL}/api`,
-  prepareHeaders: (headers) => {
-    const token = localStorage.getItem("ACCESS_TOKEN");
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
-    return headers;
-  },
-  credentials: "include",
-  async onError(response) {
-    if (response.status === 401) {
-      // Refresh the token here or redirect to login
-      console.log("Token expired, redirecting to login");
-      localStorage.removeItem("ACCESS_TOKEN");
-      window.location.href = "/login"; // Redirect to login page
-    }
-  }
-}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_API_BASE_URL}/api`,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("ACCESS_TOKEN");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+    credentials: "include",
+    async onError(response) {
+      if (response.status === 401) {
+        // Refresh the token here or redirect to login
+        console.log("Token expired, redirecting to login");
+        localStorage.removeItem("ACCESS_TOKEN");
+        window.location.href = "/login"; // Redirect to login page
+      }
+    },
+  }),
   tagTypes: ["Tasks"],
   endpoints: (builder) => ({
     // Fetch all tasks, with optional pagination and filtering

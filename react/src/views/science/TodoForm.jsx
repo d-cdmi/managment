@@ -120,7 +120,7 @@ export default function TodoForm() {
   }
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
+    <div className="mx-auto max-w-6xl p-4">
       <form onSubmit={handleSubmit} className="mt-4">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -240,7 +240,7 @@ export default function TodoForm() {
         <div className="flex space-x-4">
           <Button
             type={mode === "show" ? "button" : "submit"}
-            className={`bg-blue-500 text-white hover:bg-blue-600 w-[100px] ${
+            className={`w-[100px] bg-blue-500 text-white hover:bg-blue-600 ${
               !["owner", "science-e"].some((s) => user.role.includes(s)) &&
               mode !== "create"
                 ? "hidden"
@@ -253,15 +253,15 @@ export default function TodoForm() {
               ? mode === "update"
                 ? "Update"
                 : mode === "show"
-                ? "Edit"
-                : "Create"
+                  ? "Edit"
+                  : "Create"
               : mode === "create"
-              ? "Create"
-              : null}
+                ? "Create"
+                : null}
           </Button>
           <Button
             type="button"
-            className="bg-gray-500 text-white hover:bg-gray-600 w-[100px]"
+            className="w-[100px] bg-gray-500 text-white hover:bg-gray-600"
             onClick={() => navigate("/science")}
           >
             Go To Home

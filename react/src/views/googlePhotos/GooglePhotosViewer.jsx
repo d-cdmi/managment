@@ -212,13 +212,13 @@ const GooglePhotosFetch = () => {
         </div>
       )}
       <h1
-        className="text-5xl font-semibold cursor-pointer text-center"
+        className="cursor-pointer text-center text-5xl font-semibold"
         onClick={changesFormData}
       >
         {formdata ? "image" : "Go to Home"}{" "}
       </h1>
       {formdata ? (
-        <form onSubmit={handleSubmit} className="p-4 max-w-6xl mx-auto mt-4">
+        <form onSubmit={handleSubmit} className="mx-auto mt-4 max-w-6xl p-4">
           {["client_id", "client_secret", "refresh_token"].map((field) => (
             <div key={field} className="mb-4">
               <label className="block text-sm font-medium text-gray-300">
@@ -237,7 +237,7 @@ const GooglePhotosFetch = () => {
           <Button
             type="submit"
             disabled={loading}
-            className=" hover:bg-blue-600 w-[150px]"
+            className="w-[150px] hover:bg-blue-600"
           >
             {loading ? "....." : "save"}
           </Button>
@@ -249,36 +249,36 @@ const GooglePhotosFetch = () => {
               {/* <Loader /> */}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {allPhotos.map((photo, index) => (
                 <div
-                  className="overflow-visible p-2 rounded-lg shadow-lg object-cover "
+                  className="overflow-visible rounded-lg object-cover p-2 shadow-lg"
                   key={photo.id}
                 >
                   <img
                     src={`${photo.baseUrl}=w300`} // Add width parameter for smaller images
                     alt="Photo"
                     onClick={() => showFullScreen(index)} // Show full screen on click
-                    className="m-2 w-full max-w-[300px] object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
+                    className="m-2 w-full max-w-[300px] cursor-pointer object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
               ))}
             </div>
           )}
-          <div ref={observerRef} className="h-5 mb-5" />
+          <div ref={observerRef} className="mb-5 h-5" />
           {infiniteLoading && !showFullscreen && (
             <div className="flex items-center justify-center p-4">
               <Loader /> {/* Smaller loader for infinite scroll */}
             </div>
           )}
           {showFullscreen && (
-            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-90 flex justify-center items-center">
+            <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-90">
               <X
                 size={80}
                 color="#5384a2"
                 strokeWidth={2.75}
                 onClick={closeFullScreen}
-                className="absolute top-5 right-5 bg-opacity-50 rounded px-4 py-2 cursor-pointer"
+                className="absolute right-5 top-5 cursor-pointer rounded bg-opacity-50 px-4 py-2"
               />
 
               <ArrowLeft
@@ -286,7 +286,7 @@ const GooglePhotosFetch = () => {
                 color="#5384a2"
                 strokeWidth={2.75}
                 onClick={handlePrevImage}
-                className="absolute left-5 rounded px-4 py-2 cursor-pointer "
+                className="absolute left-5 cursor-pointer rounded px-4 py-2"
               />
 
               <ArrowRight
@@ -294,20 +294,20 @@ const GooglePhotosFetch = () => {
                 color="#5384a2"
                 strokeWidth={2.75}
                 onClick={handleNextImage}
-                className="absolute right-5 bg-opacity-50 rounded px-4 py-2 cursor-pointer"
+                className="absolute right-5 cursor-pointer rounded bg-opacity-50 px-4 py-2"
               />
 
               <img
                 src={fullscreenImg}
                 alt="Full Screen"
-                className="max-w-[90%] max-h-[90%]"
+                className="max-h-[90%] max-w-[90%]"
               />
             </div>
           )}
         </div>
       )}
       {notification && (
-        <div className="fixed bottom-4 right-4 p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+        <div className="fixed bottom-4 right-4 rounded-lg bg-gray-800 p-4 text-white shadow-lg">
           {notification}
         </div>
       )}

@@ -48,7 +48,7 @@ export default function CdmiData() {
     isLoading: isgetTaskLoading,
     error: ErrorMsgTask,
     isError: isErroringet,
-    refetch
+    refetch,
   } = useGetTasksQuery();
   const [
     deleteTask,
@@ -67,8 +67,8 @@ export default function CdmiData() {
     },
   ] = useDownloadTaskMutation();
 
-  const [toggleVisiblie]  = useToggleVisiblieMutation();
-  const [blockedFingerprint]  = useBlockedFingerprintMutation();
+  const [toggleVisiblie] = useToggleVisiblieMutation();
+  const [blockedFingerprint] = useBlockedFingerprintMutation();
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode === "dark");
@@ -95,23 +95,21 @@ export default function CdmiData() {
     try {
       // Send the fingerprint to the API
       const response = await blockedFingerprint(data.fingerprint).unwrap();
-      
+
       // Assuming the response has the fingerprint information, store it in state
       setFingerprint(response);
-      
+
       // Log the response for debugging purposes
       console.log("Fingerprint toggled:", response.isBlocked);
-      alert(response.isBlocked)
+      alert(response.isBlocked);
     } catch (error) {
       // Handle any error that occurs during the mutation
       console.error("Failed to toggle visibility:", error);
     }
-    
+
     // Refetch the tasks to update the table if needed
     refetch();
   };
-  
-  
 
   const handleConfirmDelete = () => {
     deleteTask({ id: selectedTodo.id });
@@ -166,7 +164,7 @@ export default function CdmiData() {
         cell: (info) => (
           <Button
             onClick={() => handleFingerprintBlock(info.row.original)}
-            className={`${info.row.original.isBlocked && 'bg-red-500'} ` }
+            className={`${info.row.original.isBlocked && "bg-red-500"} `}
           >
             {info.getValue()
               ? info.getValue().length > 25
@@ -228,7 +226,7 @@ export default function CdmiData() {
             ? JSON.parse(row.original.files)
             : [];
           return (
-            <div className="flex flex-wrap gap-2 items-center justify-around">
+            <div className="flex flex-wrap items-center justify-around gap-2">
               {files.length > 0 && (
                 <Button onClick={() => handleDownload(row.original)}>
                   <Download />
@@ -259,7 +257,7 @@ export default function CdmiData() {
   if (isdeletingLoading || isgetTaskLoading || isdownloadingLoading) {
     return (
       <div className="mt-8">
-        <div className="flex items-center justify-center p-4 ">
+        <div className="flex items-center justify-center p-4">
           <Loader />
         </div>
       </div>
@@ -267,24 +265,24 @@ export default function CdmiData() {
   }
 
   return (
-    <div className=" max-w-6xl mx-auto  mt-20">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+    <div className="mx-auto mt-20 max-w-6xl">
+      <div className="mb-4 flex flex-col items-center justify-between sm:flex-row">
         <h1 className="text-2xl font-semibold">Date For معنی</h1>
-        <div className="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto sm:space-x-4 gap-4">
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:space-x-4">
           <Input
             type="text"
             placeholder="Search"
-            className="py-2 px-4 rounded-md focus:outline-none focus:ring-2 sm:order-2 xl:w-[200px]"
+            className="rounded-md px-4 py-2 focus:outline-none focus:ring-2 sm:order-2 xl:w-[200px]"
           />
           <Button
-            className=" py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:order-2 xl:w-[100px]"
+            className="rounded-md px-4 py-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:order-2 xl:w-[100px]"
             onClick={() => navigate("/cdmi-data/new")}
           >
             Create
           </Button>
           <div className="flex items-center space-x-2">
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center p-2 rounded-md">
+              <DropdownMenuTrigger className="flex items-center rounded-md p-2">
                 Theme
               </DropdownMenuTrigger>
               <DropdownMenuContent>

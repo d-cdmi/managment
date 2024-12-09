@@ -38,12 +38,12 @@ export default function Signup() {
 
   return (
     <>
-      <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
-        <Card className="w-full max-w-md p-8 bg-white dark:bg-gray-800 text-black dark:text-white">
-          <h1 className="text-2xl font-semibold mb-6 text-center">Signup</h1>
+      <div className="flex min-h-screen flex-col items-center bg-gray-100 p-4 dark:bg-gray-900">
+        <Card className="w-full max-w-md bg-white p-8 text-black dark:bg-gray-800 dark:text-white">
+          <h1 className="mb-6 text-center text-2xl font-semibold">Signup</h1>
 
           {errors && Object.keys(errors).length > 0 && (
-            <div className="mb-4 p-4 border border-red-500 text-red-500 rounded">
+            <div className="mb-4 rounded border border-red-500 p-4 text-red-500">
               {Object.keys(errors).map((key) => (
                 <p key={key}>{errors[key][0]}</p>
               ))}

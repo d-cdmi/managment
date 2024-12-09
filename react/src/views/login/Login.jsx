@@ -98,15 +98,15 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-[360px] relative z-10 bg-black max-w-[360px] p-8 shadow-sm">
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="relative z-10 w-[360px] max-w-[360px] bg-black p-8 shadow-sm">
         <form onSubmit={onSubmit}>
-          <h1 className="text-lg mb-4 text-center">WelCome</h1>
+          <h1 className="mb-4 text-center text-lg">WelCome</h1>
           <Input
             ref={usernameRef}
             type="text"
             placeholder="Enter your username"
-            className="block w-full mb-4 p-2 border rounded"
+            className="mb-4 block w-full rounded border p-2"
             name="username"
             required
           />
@@ -114,12 +114,12 @@ export default function Login() {
             ref={passwordRef}
             type="password"
             placeholder="Enter Password"
-            className="block w-full mb-4 p-2 border rounded"
+            className="mb-4 block w-full rounded border p-2"
             name="password"
             required
           />
           <Button
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-sky-700"
+            className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-sky-700"
             disabled={loading}
             onClick={() => setMessage("")}
           >
@@ -127,7 +127,7 @@ export default function Login() {
           </Button>
           <br />
           {message && (
-            <div className="mt-4 text-[#ae1212]  text-center text-xl">
+            <div className="mt-4 text-center text-xl text-[#ae1212]">
               <h3>{message}</h3>
             </div>
           )}

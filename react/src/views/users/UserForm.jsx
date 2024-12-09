@@ -108,14 +108,14 @@ export default function UserForm() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
-      <Card className="w-full max-w-md p-8 bg-white dark:bg-gray-800 text-black dark:text-white">
-        <h1 className="text-2xl font-semibold mb-6 text-center">
+    <div className="flex min-h-screen flex-col items-center bg-gray-100 p-4 dark:bg-gray-900">
+      <Card className="w-full max-w-md bg-white p-8 text-black dark:bg-gray-800 dark:text-white">
+        <h1 className="mb-6 text-center text-2xl font-semibold">
           {user.id ? `Update User: ${user.name}` : "New User"}
         </h1>
         {loading && <Loader />}
         {errors && Object.keys(errors).length > 0 && (
-          <div className="mb-4 p-4 border border-red-500 text-red-500 rounded">
+          <div className="mb-4 rounded border border-red-500 p-4 text-red-500">
             {Object.keys(errors).map((key) => (
               <p key={key}>{errors[key][0]}</p>
             ))}
@@ -149,8 +149,8 @@ export default function UserForm() {
 
             {/* Checkboxes for roles */}
             <div className="mb-4">
-              <h2 className="font-semibold mb-2">Roles</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <h2 className="mb-2 font-semibold">Roles</h2>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
                 {Object.keys(roles).map((role) => (
                   <label key={role} className="flex items-center">
                     <input

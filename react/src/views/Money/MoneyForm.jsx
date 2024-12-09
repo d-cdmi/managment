@@ -91,9 +91,9 @@ export default function MoneyForm() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
-      <Card className="w-full max-w-md p-8 bg-white dark:bg-gray-800 text-black dark:text-white">
-        <h1 className="text-2xl font-semibold mb-6 text-center">
+    <div className="flex min-h-screen flex-col items-center bg-gray-100 p-4 dark:bg-gray-900">
+      <Card className="w-full max-w-md bg-white p-8 text-black dark:bg-gray-800 dark:text-white">
+        <h1 className="mb-6 text-center text-2xl font-semibold">
           {id
             ? `Edit ${
                 formData.category.charAt(0).toUpperCase() +
@@ -154,7 +154,7 @@ export default function MoneyForm() {
                 }
                 placeholder="Title"
                 required
-                className="w-full mt-1"
+                className="mt-1 w-full"
               />
             </label>
 
@@ -172,7 +172,7 @@ export default function MoneyForm() {
                 }
                 placeholder="Description"
                 rows="4"
-                className="w-full p-2 border mt-1"
+                className="mt-1 w-full border p-2"
               />
             </label>
 
@@ -217,7 +217,7 @@ export default function MoneyForm() {
                     }
                     placeholder="Total Money"
                     required
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
                 <label className="block">
@@ -234,7 +234,7 @@ export default function MoneyForm() {
                       }))
                     }
                     placeholder="Who to Take"
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
               </>
@@ -257,7 +257,7 @@ export default function MoneyForm() {
                     }
                     placeholder="Money"
                     required
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
                 <label className="block">
@@ -274,7 +274,7 @@ export default function MoneyForm() {
                       }))
                     }
                     placeholder="To Give Money"
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
               </>
@@ -297,7 +297,7 @@ export default function MoneyForm() {
                     }
                     placeholder="Money"
                     required
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
                 <label className="block">
@@ -314,7 +314,7 @@ export default function MoneyForm() {
                       }))
                     }
                     placeholder="Who to Take"
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
 
@@ -332,7 +332,7 @@ export default function MoneyForm() {
                       }))
                     }
                     placeholder="To Take Date"
-                    className="w-full mt-1"
+                    className="mt-1 w-full"
                   />
                 </label>
               </>
@@ -351,7 +351,7 @@ export default function MoneyForm() {
                   }))
                 }
                 placeholder="To Give Date"
-                className="w-full mt-1"
+                className="mt-1 w-full"
               />
             </label>
 
