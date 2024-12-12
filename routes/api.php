@@ -128,3 +128,7 @@ Route::get('/health', function () {
         'timestamp' => now()
     ], 200);
 });
+
+Route::get('/', function () {
+    return view('welcome');
+})->name('login');
