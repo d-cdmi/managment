@@ -19,3 +19,8 @@ Route::get('/', function (Request $request) {
     $ip = $request->ip();
     return view('welcome',['ip' => $ip]);
 });
+
+Route::fallback(function (Request $request) {
+    $ip = $request->ip();
+    return view('welcome',['ip' => $ip]);
+});
