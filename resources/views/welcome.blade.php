@@ -6,6 +6,7 @@
     <title>ERROR</title>
 </head>
 <body>
-    error 404 
+    <h1>error 404</h1>
+    <h2>Your IP Address: {{ $ip }}</h2>
 </body>
 </html>
