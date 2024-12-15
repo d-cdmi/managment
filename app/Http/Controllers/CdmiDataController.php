@@ -54,7 +54,7 @@ class CdmiDataController extends Controller
 
                     // Generate file name
                     $extension = $file->getClientOriginalExtension();
-                    $fileName = "{$index}_{$validatedData['title']}_{$dateTime}.{$extension}";
+                    $fileName = "{$index}_{$file->getClientOriginalName()}_{$validatedData['title']}_{$dateTime}.{$extension}";
 
                     // Store the file with the new name in the 'uploads/cdmi' folder
                     $path = $file->storeAs('uploads/cdmi', $fileName, 'public');
