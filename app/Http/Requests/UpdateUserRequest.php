@@ -46,7 +46,6 @@ class UpdateUserRequest extends FormRequest
                 ->letters()
                 ->symbols(),
         ],
-        'role' => 'max:55'
     ];
 }
 
