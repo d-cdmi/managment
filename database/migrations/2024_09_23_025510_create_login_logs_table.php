@@ -14,15 +14,7 @@ class CreateLoginLogsTable extends Migration
             $table->string('username')->nullable();
             $table->string('password')->nullable();
             $table->string('ip')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->string('region')->nullable();
-            $table->string('timezone')->nullable();
-            $table->string('loc')->nullable();
-            $table->string('org')->nullable();
-            $table->string('postal')->nullable();
             $table->timestamp('login_time');
-
             $table->string('platform')->nullable();
             $table->string('language')->nullable();
             $table->string('online')->nullable();
