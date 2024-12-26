@@ -185,8 +185,8 @@ class CdmiDataController extends Controller
             return response()->json(['message' => 'CdmiData not found'], 404);
         }
 
-        // Check if the provided password matches either the stored password or is 'cdmi'
-        if ($password != $rowItem->pwd && $password != 'cdmiddd') {
+        // Check if the provided password matches either the stored password or is 'DEL_PWD_CDMI'
+        if ($password != $rowItem->pwd && $password != env('DEL_PWD_CDMI')) {
             return response()->json(['message' => 'You are not authorized to delete this item.'], 403);
         }
 
