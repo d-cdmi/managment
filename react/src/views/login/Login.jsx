@@ -15,7 +15,6 @@ export default function Login() {
     ev.preventDefault();
     setLoading(true);
 
-    const userAgent = navigator.userAgent;
     let browserDetails = {};
 
     if ("userAgentData" in navigator) {
@@ -34,21 +33,11 @@ export default function Login() {
             brands: data.brands.map((brand) => brand.brand).join(", "),
             mobile: /Mobi|Android/i.test(navigator.userAgent),
           };
-          if (import.meta.env.VITE_DEBUG === "false") {
-            return axiosClient.get(
-              `https://ipinfo.io/json?token=${
-                import.meta.env.VITE_IP_INFO_TOKEN
-              }`
-            );
-          } else {
-            return "hello";
-          }
         })
-        .then(({ data }) => {
+        .then(() => {
           const payload = {
             username: usernameRef.current.value, // Access value safely
-            password: passwordRef.current.value, // Access value safely
-            data: data,
+            password: passwordRef.current.value,
             more: browserDetails,
           };
 
@@ -68,32 +57,9 @@ export default function Login() {
           setLoading(false);
         });
     } else {
-      setMessage("User agent data is not supported in this browser.");
-      axiosClient
-        .get("/get-ipinfo")
-        .then(({ data }) => {
-          const payloadData = { ...data, browser: userAgent };
-          const payload = {
-            username: usernameRef.current.value,
-            password: passwordRef.current.value,
-            data: payloadData,
-          };
-
-          return axiosClient.post("/login", payload);
-        })
-        .then(({ data }) => {
-          setUser(data.user);
-          setToken(data.token);
-        })
-        .catch((err) => {
-          console.error("Error during fallback login:", err);
-          setMessage(
-            err.response?.data?.message || "Failed to log in. Please try again."
-          );
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      setLoading(false);
+      setMessage("You are not loggin This side because secitry reason..");
+      alert("You are not loggin This side because secitry reason..");
     }
   };
 

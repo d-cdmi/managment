@@ -22,13 +22,14 @@ import {
 } from "@/components/ui/table";
 import { AlertDialogDemo } from "@/components/AlertDialogDemo.jsx";
 import { Input } from "@/components/ui/input.jsx";
-import { Pen, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 export default function Logpage() {
   const { user, setNotification } = useStateContext();
   const navigate = useNavigate();
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [ipLoading, setipLoading] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -37,6 +38,7 @@ export default function Logpage() {
     if (!["owner", "log"].some((s) => user.role.includes(s))) {
       navigate("/404");
     }
+    console.log(user.role);
   }, [user, navigate]);
 
   const getTodo = () => {
@@ -53,6 +55,19 @@ export default function Logpage() {
       });
   };
 
+  const getIpInfo = (ip) => {
+    setipLoading(true);
+    axiosClient
+      .get(
+        `https://ipinfo.io/${ip}?token=${import.meta.env.VITE_IP_INFO_TOKEN}`
+      )
+      .then((res) => {
+        setNotification(JSON.stringify(res.data));
+      })
+      .finally(() => {
+        setipLoading(false);
+      });
+  };
   useEffect(() => {
     getTodo();
   }, []);
@@ -67,21 +82,21 @@ export default function Logpage() {
       axiosClient
         .delete(`/log/${selectedTodo.id}`)
         .then(() => {
-          setNotification("Todo was successfully deleted");
+          setNotification("successfully deleted");
           getTodo();
         })
         .catch((e) => {
-          setNotification("Error deleting todo", e);
+          setNotification("Error deleting ", e);
         });
     } else {
       axiosClient
         .delete(`/log`)
         .then(() => {
-          setNotification("Todo was successfully deleted");
+          setNotification("successfully deleted");
           getTodo();
         })
         .catch((e) => {
-          setNotification("Error deleting todo", e);
+          setNotification("Error deleting ", e);
         });
       setIsAlertOpen(false);
       setSelectedTodo(null);
@@ -109,23 +124,34 @@ export default function Logpage() {
               : info.getValue()
             : " ",
       }),
-      columnHelper.accessor("loc", {
+      columnHelper.accessor("ip", {
+        header: "IP",
+        cell: ({ row }) => {
+          return (
+            <Button
+              onClick={() => getIpInfo(row.original.ip)}
+              className="w-[115px] text-blue-500 hover:underline"
+              disabled={ipLoading}
+            >
+              {ipLoading ? "......" : row.original.ip}
+            </Button>
+          );
+        },
+      }),
+
+      columnHelper.accessor("platform", {
         header: "loc",
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor("ip", {
-        header: "ip",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("city", {
+      columnHelper.accessor("language", {
         header: "city",
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor("region", {
+      columnHelper.accessor("screenWidth", {
         header: "region",
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor("org", {
+      columnHelper.accessor("screenHeight", {
         header: "org",
         cell: (info) => info.getValue(),
       }),
@@ -146,31 +172,18 @@ export default function Logpage() {
         id: "actions",
         header: "Actions",
         cell: ({ row }) => {
-          {
-            ["owner", "log"].some((s) => user.role.includes(s)) && (
-              <Link
-                to={`/log/${row.original.id}`}
-                className="text-blue-500 hover:underline"
-              >
+          return (
+            <>
+              {["owner", "log-d"].some((s) => user.role.includes(s)) && (
                 <Button
-                  className="ml-4 hover:bg-red-600"
+                  className="ml-4 bg-red-500 text-white hover:bg-red-600"
                   onClick={() => onDeleteClick(row.original)}
                 >
-                  <Pen />
+                  <Trash2 />
                 </Button>
-              </Link>
-            );
-          }
-          {
-            ["owner", "log-d"].some((s) => user.role.includes(s)) && (
-              <Button
-                className="ml-4 bg-red-500 text-white hover:bg-red-600"
-                onClick={() => onDeleteClick(row.original)}
-              >
-                <Trash2 />
-              </Button>
-            );
-          }
+              )}
+            </>
+          );
         },
       }),
     ],
