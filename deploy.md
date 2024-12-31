@@ -59,7 +59,6 @@ vim .env
 + type `i` button to editor .env file and change `APP_NAME` `APP_ENV` `APP_DEBUG` `APP_URL`
 
 ```bash
-
 APP_NAME="my app"
 APP_ENV=prod
 APP_DEBUG=false
