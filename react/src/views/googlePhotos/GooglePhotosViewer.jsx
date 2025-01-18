@@ -5,17 +5,26 @@ import { Input } from "@/components/ui/Input.jsx";
 import Loader from "@/components/ui/loader.jsx";
 import axiosClient from "@/axios-client.js";
 import { useStateContext } from "@/context/ContextProvider";
-import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import Lightbox from "yet-another-react-lightbox";
+import {
+  Captions,
+  Fullscreen,
+  Thumbnails,
+  Zoom,
+} from "yet-another-react-lightbox/plugins";
+import "yet-another-react-lightbox/plugins/captions.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import Video from "yet-another-react-lightbox/plugins/video";
+import "yet-another-react-lightbox/styles.css";
+import MediaItem from "./MediaItem";
 
 Modal.setAppElement("#root"); // Important for accessibility
 
 const GooglePhotosFetch = () => {
   const { setNotification, notification } = useStateContext();
-  const [allPhotos, setAllPhotos] = useState([]); // Store all fetched photos
+  const [index, setIndex] = useState(-1);
+  const [data, setData] = useState([]);
   const [nextPageToken, setNextPageToken] = useState(null); // Track the next page token
-  const [fullscreenImg, setFullscreenImg] = useState(""); // Store image for full screen
-  const [showFullscreen, setShowFullscreen] = useState(false); // State to toggle full screen
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Current image index
   const [formdata, setFormdata] = useState(true);
   const [accessToken, setAccessToken] = useState(null); // Store access token
   const [initialLoading, setInitialLoading] = useState(false); // Loading state for initial data load
@@ -69,9 +78,8 @@ const GooglePhotosFetch = () => {
     }
 
     try {
-      const url = `https://photoslibrary.googleapis.com/v1/mediaItems?pageToken=${
-        pageToken || ""
-      }`;
+      const url = `https://photoslibrary.googleapis.com/v1/mediaItems?pageToken=${pageToken || ""
+        }`;
       const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -83,7 +91,7 @@ const GooglePhotosFetch = () => {
       }
 
       const data = await response.json();
-      setAllPhotos((prevPhotos) => [...prevPhotos, ...(data.mediaItems || [])]);
+      setData((prevPhotos) => [...prevPhotos, ...(data.mediaItems || [])]);
       setNextPageToken(data.nextPageToken); // Update nextPageToken for pagination
     } catch (error) {
       setNotification(error.message);
@@ -95,7 +103,7 @@ const GooglePhotosFetch = () => {
 
   const handleFetchPhotos = async () => {
     try {
-      setAllPhotos([]); // Clear photos before fetching new ones
+      setData([]); // Clear photos before fetching new one
       if (!accessToken) {
         const newAccessToken = await getAccessToken(credentials.refresh_token);
         setAccessToken(newAccessToken);
@@ -113,35 +121,6 @@ const GooglePhotosFetch = () => {
       fetchPhotos("", true); // Fetch photos on initial load
     }
   }, [accessToken]);
-
-  const showFullScreen = (index) => {
-    setCurrentImageIndex(index);
-    setFullscreenImg(allPhotos[index]?.baseUrl); // Set the source to the full image
-    setShowFullscreen(true); // Show the full screen overlay
-  };
-
-  const closeFullScreen = () => {
-    setShowFullscreen(false); // Hide the full screen overlay
-  };
-
-  const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === allPhotos.length - 1 ? 0 : prevIndex + 1
-    );
-    setFullscreenImg(
-      allPhotos[(currentImageIndex + 1) % allPhotos.length]?.baseUrl
-    ); // Update full-screen image
-  };
-
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? allPhotos.length - 1 : prevIndex - 1
-    );
-    setFullscreenImg(
-      allPhotos[(currentImageIndex - 1 + allPhotos.length) % allPhotos.length]
-        ?.baseUrl
-    ); // Update full-screen image
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -179,7 +158,7 @@ const GooglePhotosFetch = () => {
   // Infinite scrolling functionality
   useEffect(() => {
     const loadMorePhotos = () => {
-      if (nextPageToken && !showFullscreen) {
+      if (nextPageToken) {
         fetchPhotos(nextPageToken, false); // Load additional photos without triggering main loader
       }
     };
@@ -199,10 +178,33 @@ const GooglePhotosFetch = () => {
         observer.unobserve(observerRef.current);
       }
     };
-  }, [nextPageToken, showFullscreen]); // Only run this effect when nextPageToken or showFullscreen changes
+  }, [nextPageToken]); // Only run this effect when nextPageToken 
   const changesFormData = () => {
     setFormdata(!formdata);
   };
+
+  const slides = data?.map(
+    (item) => {
+      const isVideo = item.mimeType.startsWith("video/");
+      if (isVideo) {
+        return {
+          type: "video",
+          width: parseInt(item.mediaMetadata.width),
+          height: parseInt(item.mediaMetadata.height),
+          poster: `${item.baseUrl}=w1600-h1600`,
+          sources: [
+            {
+              src: `${item.baseUrl}=dv`,
+              type: item.mimeType,
+            },
+          ],
+        };
+      }
+      return {
+        src: `${item.baseUrl}=w1600-h1600`,
+      };
+    }
+  );
 
   return (
     <div className="container">
@@ -249,59 +251,40 @@ const GooglePhotosFetch = () => {
               {/* <Loader /> */}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {allPhotos.map((photo, index) => (
-                <div
-                  className="overflow-visible rounded-lg object-cover p-2 shadow-lg"
-                  key={photo.id}
-                >
-                  <img
-                    src={`${photo.baseUrl}=w300`} // Add width parameter for smaller images
-                    alt="Photo"
-                    onClick={() => showFullScreen(index)} // Show full screen on click
-                    className="m-2 w-full max-w-[300px] cursor-pointer object-cover transition-transform duration-300 hover:scale-105"
-                  />
+            <>
+              <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6'>
+                  {data?.map((item, idx) => (
+                    <MediaItem
+                      key={item.id}
+                      item={item}
+                      index={idx}
+                      onItemClick={setIndex}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+              <Lightbox
+                plugins={[Captions, Fullscreen, Zoom, Thumbnails, Video]}
+                captions={{
+                  showToggle: true,
+                  descriptionTextAlign: "start",
+                }}
+                styles={{
+                  container: { backgroundColor: "rgba(0, 0, 0, .95)" },
+                  thumbnail: { borderRadius: "4px" },
+                }}
+                open={index >= 0}
+                close={() => setIndex(-1)}
+                index={index}
+                slides={slides}
+              />
+            </>
           )}
           <div ref={observerRef} className="mb-5 h-5" />
-          {infiniteLoading && !showFullscreen && (
+          {infiniteLoading && (
             <div className="flex items-center justify-center p-4">
               <Loader /> {/* Smaller loader for infinite scroll */}
-            </div>
-          )}
-          {showFullscreen && (
-            <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-90">
-              <X
-                size={80}
-                color="#5384a2"
-                strokeWidth={2.75}
-                onClick={closeFullScreen}
-                className="absolute right-5 top-5 cursor-pointer rounded bg-opacity-50 px-4 py-2"
-              />
-
-              <ArrowLeft
-                size={80}
-                color="#5384a2"
-                strokeWidth={2.75}
-                onClick={handlePrevImage}
-                className="absolute left-5 cursor-pointer rounded px-4 py-2"
-              />
-
-              <ArrowRight
-                size={80}
-                color="#5384a2"
-                strokeWidth={2.75}
-                onClick={handleNextImage}
-                className="absolute right-5 cursor-pointer rounded bg-opacity-50 px-4 py-2"
-              />
-
-              <img
-                src={fullscreenImg}
-                alt="Full Screen"
-                className="max-h-[90%] max-w-[90%]"
-              />
             </div>
           )}
         </div>
